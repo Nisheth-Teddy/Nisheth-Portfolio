@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nisheth J Teddy — Developer Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --card: #1a1a26;
+      --accent: #7c6aff;
+      --accent2: #ff6a9e;
+      --accent3: #6affd4;
+      --text: #e8e8f0;
+      --muted: #7a7a9a;
+      --border: rgba(124, 106, 255, 0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* BACKGROUND GLOW */
+    .bg-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(124,106,255,0.12), transparent 70%);
+      top: -200px; left: -200px;
+    }
+    .bg-glow-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(106,255,212,0.08), transparent 70%);
+      bottom: 100px; right: -100px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-content { max-width: 750px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(124,106,255,0.1);
+      border: 1px solid rgba(124,106,255,0.3);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+
+    .hero h1 .line2 {
+      display: block;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s ease 0.2s both;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      background: #9580ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(124,106,255,0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      animation: fadeUp 0.6s ease 0.4s both;
+    }
+
+    
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      display: block;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SECTION STYLES */
+    .section-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 4rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 3rem;
+      line-height: 1.1;
+    }
+
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      margin-bottom: 4rem;
+      opacity: 0.3;
+    }
+
+    /* SKILLS */
+    .skills-section { background: var(--surface); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .skill-chip:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(124,106,255,0.15);
+    }
+    .skill-icon { font-size: 1.6rem; margin-bottom: 0.5rem; display: block; }
+    .skill-name { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+
+    /* EXPERIENCE */
+    .exp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      border-radius: 4px 0 0 4px;
+    }
+    .exp-card:hover { border-color: rgba(124,106,255,0.4); }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .exp-role {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .exp-company { color: var(--accent); font-weight: 500; margin-top: 0.2rem; }
+    .exp-period {
+      background: rgba(124,106,255,0.1);
+      border: 1px solid rgba(124,106,255,0.2);
+      border-radius: 100px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .exp-list {
+      list-style: none;
+      margin-top: 1rem;
+    }
+    .exp-list li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding: 0.3rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .exp-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent3);
+      font-size: 0.8rem;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(124,106,255,0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .project-card:hover {
+      border-color: rgba(124,106,255,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+    .project-card:hover::after { opacity: 1; }
+
+    .project-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+    }
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .tag {
+      background: rgba(106,255,212,0.08);
+      border: 1px solid rgba(106,255,212,0.2);
+      color: var(--accent3);
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    /* CERTIFICATIONS */
+    .cert-section { background: var(--surface); }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      transition: all 0.2s;
+    }
+    .cert-card:hover {
+      border-color: rgba(124,106,255,0.4);
+      transform: translateY(-3px);
+    }
+    .cert-badge {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, rgba(124,106,255,0.2), rgba(255,106,158,0.2));
+      border: 1px solid rgba(124,106,255,0.3);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .cert-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .cert-issuer { font-size: 0.85rem; color: var(--accent); font-weight: 500; }
+
+    /* EDUCATION */
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      transition: border-color 0.2s;
+    }
+    .edu-card:hover { border-color: rgba(124,106,255,0.4); }
+    .edu-degree {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .edu-college { color: var(--muted); font-size: 0.9rem; margin-top: 0.3rem; }
+    .edu-right { text-align: right; }
+    .edu-year { color: var(--accent); font-weight: 500; font-size: 0.9rem; }
+    .edu-grade {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent3);
+    }
+
+    /* CONTACT */
+    .contact-section {
+      background: linear-gradient(135deg, rgba(124,106,255,0.05), rgba(255,106,158,0.05));
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .contact-title span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-sub { color: var(--muted); margin-bottom: 2rem; }
+
+    .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .contact-item:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+    .contact-item-icon {
+      width: 36px; height: 36px;
+      background: rgba(124,106,255,0.15);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .contact-item-label { font-size: 0.75rem; color: var(--muted); }
+    .contact-item-value { font-weight: 500; font-size: 0.9rem; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer span { color: var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 7rem 1.5rem 3rem; }
+      .section-wrap { padding: 4rem 1.5rem; }
+      .hero-stats { gap: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">NJ</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:nishethteddy129@gmail.com" class="btn-primary" style="font-size:0.85rem; padding:0.6rem 1.3rem;">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="about">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Available for opportunities</div>
+      <h1>
+        Nisheth J Teddy
+        <span class="line2">Backend Developer</span>
+      </h1>
+      <p class="hero-desc">
+        Passionate about building scalable web applications and clean APIs.
+        Experienced in Python, Flask, Java, Spring Boot & React — based in Chennai, India.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-outline">Get In Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">1<span>+</span></span>
+          <span class="stat-label">Year Experience</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Projects Built</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Certifications</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="section-wrap">
+    <p class="section-label">What I work with</p>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="section-divider"></div>
+    <div class="skills-grid">
+      <div class="skill-chip"><span class="skill-icon">🐍</span><span class="skill-name">Python</span></div>
+      <div class="skill-chip"><span class="skill-icon">🌶️</span><span class="skill-name">Flask</span></div>
+      <div class="skill-chip"><span class="skill-icon">☕</span><span class="skill-name">Java</span></div>
+      <div class="skill-chip"><span class="skill-icon">🍃</span><span class="skill-name">Spring Boot</span></div>
+      <div class="skill-chip"><span class="skill-icon">⚛️</span><span class="skill-name">React.js</span></div>
+      <div class="skill-chip"><span class="skill-icon">🗄️</span><span class="skill-name">MySQL</span></div>
+      <div class="skill-chip"><span class="skill-icon">🔗</span><span class="skill-name">REST APIs</span></div>
+      <div class="skill-chip"><span class="skill-icon">🌐</span><span class="skill-name">HTML & CSS</span></div>
+      <div class="skill-chip"><span class="skill-icon">⚡</span><span class="skill-name">JavaScript</span></div>
+      <div class="skill-chip"><span class="skill-icon">🔧</span><span class="skill-name">Git</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-wrap">
+    <p class="section-label">Where I've worked</p>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-divider"></div>
+    <div class="exp-card">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Backend Developer</div>
+          <div class="exp-company">Numota Technology</div>
+        </div>
+        <div class="exp-period">Jul 2023 – Sep 2024</div>
+      </div>
+      <ul class="exp-list">
+        <li>Built scalable web applications using Python, Flask, and MySQL for back-end development</li>
+        <li>Designed and implemented responsive, user-friendly interfaces with a focus on UX</li>
+        <li>Developed server-side functionality by integrating RESTful APIs for seamless client-server communication</li>
+        <li>Collaborated with cross-functional teams to deliver features on time and to specification</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-wrap">
+    <p class="section-label">What I've built</p>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-divider"></div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-icon">🏆</div>
+        <div class="project-title">Sports Management App</div>
+        <p class="project-desc">
+          A full-featured platform for managing sports clubs, member information, and tournaments.
+          Includes CRUD operations, tournament scheduling, user authentication, and an optimized
+          relational database for fast data retrieval.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Flask</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">REST API</span>
+          <span class="tag">HTML/CSS</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">⚽</div>
+        <div class="project-title">Scoober Application</div>
+        <p class="project-desc">
+          A smart turf booking and advertisement management platform. Features secure multi-role
+          authentication, an ad approval workflow, turf management, and optimized database
+          indexing for efficient data retrieval.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Flask</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">REST API</span>
+          <span class="tag">Auth</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="cert-section">
+  <div class="section-wrap">
+    <p class="section-label">Credentials</p>
+    <h2 class="section-title">Certifications</h2>
+    <div class="section-divider"></div>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-badge">🐍</div>
+        <div class="cert-info">
+          <div class="cert-name">Python Developer Certification</div>
+          <div class="cert-issuer">Numota Technology</div>
+          <p style="font-size:0.82rem; color:var(--muted); margin-top:0.4rem;">Certified in Python programming and backend development with hands-on experience building robust web applications.</p>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">☕</div>
+        <div class="cert-info">
+          <div class="cert-name">Master Full Stack in Java</div>
+          <div class="cert-issuer">FITA Academy</div>
+          <p style="font-size:0.82rem; color:var(--muted); margin-top:0.4rem;">Gained hands-on experience in HTML, CSS, JavaScript, React.js, and Spring Boot through real-world application development.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section>
+  <div class="section-wrap">
+    <p class="section-label">Academic background</p>
+    <h2 class="section-title">Education</h2>
+    <div class="section-divider"></div>
+    <div class="edu-card">
+      <div>
+        <div class="edu-degree">Bachelor of Business Administration</div>
+        <div class="edu-college">Mar Gregorios College, Mogappair West</div>
+      </div>
+      <div class="edu-right">
+        <div class="edu-year">2020 – 2023</div>
+        <div class="edu-grade">70%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="section-wrap">
+    <div class="contact-grid">
+      <div>
+        <p class="section-label">Get in touch</p>
+        <h2 class="contact-title">Let's work <span>together</span></h2>
+        <p class="contact-sub">I'm currently open to new opportunities. Whether you have a role in mind or just want to connect — my inbox is always open!</p>
+        <a href="mailto:nishethteddy129@gmail.com" class="btn-primary">Send Me an Email</a>
+      </div>
+      <div class="contact-items">
+        <a href="mailto:nishethteddy129@gmail.com" class="contact-item">
+          <div class="contact-item-icon">✉️</div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-value">nishethteddy129@gmail.com</div>
+          </div>
+        </a>
+        <a href="tel:+917448842765" class="contact-item">
+          <div class="contact-item-icon">📱</div>
+          <div>
+            <div class="contact-item-label">Phone</div>
+            <div class="contact-item-value">+91 7448842765</div>
+          </div>
+        </a>
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div>
+            <div class="contact-item-label">Location</div>
+            <div class="contact-item-value">Kilpauk, Chennai — 600010</div>
+          </div>
+        </div>
+        <a href="https://github.com/Nisheth-Teddy" target="_blank" class="contact-item">
+          <div class="contact-item-icon">🐙</div>
+          <div>
+            <div class="contact-item-label">GitHub</div>
+            <div class="contact-item-value">github.com/your-username</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Designed & built by <span>Nisheth J Teddy</span> · Chennai, India · 2026</p>
+</footer>
+
+</body>
+</html>
